@@ -1,0 +1,24 @@
+{
+  "name": "Lasc-Solas",
+  "version": "1.0.0",
+  "description": "Electron App to control Kasa Smart bulb",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JckD/Lasc-Solas.git"
+  },
+  "keywords": [],
+  "author": "Jack D",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JckD/Lasc-Solas/issues"
+  },
+  "homepage": "https://github.com/JckD/Lasc-Solas#readme",
+  "devDependencies": {
+    "electron": "^11.2.3"
+  }
+}
