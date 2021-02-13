@@ -102,3 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+# exe thats too big
+
+out/Lasc-Solas-win32-x64/Lasc-Solas.exe
+
+out/
