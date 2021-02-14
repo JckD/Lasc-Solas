@@ -5,13 +5,15 @@ const client = new Client();
 
 
 
-     let devices = client.startDiscovery()
 
+client.startDiscovery()
+console.log(client.devices)
+console.log(client.devices.values())
 
-     console.log(devices.devices)
-     let values = [...devices.devices.entires()];
+let values = client.devices.values()
 
-     console.log(values)
+console.log(values.Bulb)
+console.log(values.next().value)
 
 
 function bulbToggle() {
@@ -21,7 +23,4 @@ function bulbToggle() {
         device.setPowerState(!await device.getPowerState())  
     }) 
 }
-
-
-
 

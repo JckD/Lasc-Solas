@@ -2,14 +2,47 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Lasc Solas</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script type="text/javascript" src="lightControl.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
+    <script type="text/javascript" src="renderer.js"></script>
+    <script type="text/javascript" src="titlebar.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
-<body style="background: white;">
-    <div>
-        <p><script></script></p>
-        <button onclick="bulbToggle()">Lights on</button>
-    </div>
+<body style="background: #393e46;"">
+    <div style="-webkit-region: drag">
+        <div id="title-bar">
+            <div id="title">Lasc Solas</div>
+            <div id="title-bar-btns">
+                 <button id="min-btn">-</button>
+                 <button id="max-btn">+</button>
+                 <button id="close-btn">x</button>
+            </div>
+       </div>
+    </div>   
+        <div class="container">
+            <div class="container-fluid">
+                <div class="row">
+                <div class="col-sm">
+                    <button id="toggle-dark-mode" class="btn" type="button" >Dark Mode</button>
+                </div>
+                <div class="col-sm">
+                <button class="btn" type="button" id="reset-to-system">Reset to System</button>
+
+                </div>
+                <div class="col-sm">
+                    <div class="custom-switch">
+                        <input type="checkbox" id="switch-1" value="" onchange="bulbToggle()">
+                        <label for="switch-1">Switch 1</label>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    
+    
 </body>
 </html>
