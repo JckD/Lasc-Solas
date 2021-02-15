@@ -3,44 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Lasc Solas</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' http://* 'unsafe-inline';" />
     <script type="text/javascript" src="lightControl.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
-    <script type="text/javascript" src="renderer.js"></script>
-    <script type="text/javascript" src="titlebar.js"></script>
-
+    <script type="text/javascript" src="renderer.js"></script> 
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>  -->
+    <script type="text/javascript" src="./node_modules/@eastdesire/jscolor/jscolor.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    
 </head>
-<body style="background: #393e46;"">
+<script>
+    var picker = new JSColor()
+
+                    
+    function update(picker) {
+        console.log(picker)
+        
+    }
+
+    // triggers 'onInput' and 'onChange' on all color pickers when they are ready
+    jscolor.trigger('input change');
+    
+</script>
+<body class="dark-mode">
     <div style="-webkit-region: drag">
         <div id="title-bar">
             <div id="title">Lasc Solas</div>
             <div id="title-bar-btns">
-                 <button id="min-btn">-</button>
-                 <button id="max-btn">+</button>
-                 <button id="close-btn">x</button>
+                 <button id="min-button">-</button>
+                 <button id="close-button">x</button>
             </div>
        </div>
     </div>   
-        <div class="container">
-            <div class="container-fluid">
-                <div class="row">
-                <div class="col-sm">
-                    <button id="toggle-dark-mode" class="btn" type="button" >Dark Mode</button>
-                </div>
-                <div class="col-sm">
-                <button class="btn" type="button" id="reset-to-system">Reset to System</button>
-
-                </div>
-                <div class="col-sm">
-                    <div class="custom-switch">
-                        <input type="checkbox" id="switch-1" value="" onchange="bulbToggle()">
-                        <label for="switch-1">Switch 1</label>
-                    </div>
-                </div>
-                </div>
-            </div>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>On/Off</th>
+                        <th>Colour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RGB Bulb</td>
+                        <td>
+                            <div class="custom-switch">
+                            
+                                <input type="checkbox" id="switch-1" value="" onchange="bulbToggle()">
+                                <label for="switch-1"></label>
+                            </div> 
+                        </td>
+                        <td>
+                            
+                            <input type="button" data-jscolor="{onInput:'update(this)',
+                            onChange:'update(this)', alpha:1.0 , backgroundColor: '#333'}" id="colorInput"">
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            
         </div>
     
     
