@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lasc Solas</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' http://* 'unsafe-inline';" />
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' http://* 'unsafe-inline' 'unsafe-eval;" /> -->
     <script type="text/javascript" src="lightControl.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
     <script type="text/javascript" src="renderer.js"></script> 
@@ -13,20 +13,9 @@
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
     
 </head>
-<script>
-    var picker = new JSColor()
 
-                    
-    function update(picker) {
-        console.log(picker)
-        
-    }
 
-    // triggers 'onInput' and 'onChange' on all color pickers when they are ready
-    jscolor.trigger('input change');
-    
-</script>
-<body class="dark-mode">
+<body class="dark-mode" onload="getDevices()">
     <div style="-webkit-region: drag">
         <div id="title-bar">
             <div id="title">Lasc Solas</div>
@@ -36,8 +25,8 @@
             </div>
        </div>
     </div>   
-        <div>
-            <table class="table table-striped">
+        
+            <table id="deivceTable" class="table table-striped"  >
                 <thead>
                     <tr>
                         <th>Device</th>
@@ -45,8 +34,8 @@
                         <th>Colour</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="deviceTableBody">
+                    <!-- <tr>
                         <td>RGB Bulb</td>
                         <td>
                             <div class="custom-switch">
@@ -57,17 +46,11 @@
                         </td>
                         <td>
                             
-                            <input type="button" data-jscolor="{onInput:'update(this)',
-                            onChange:'update(this)', alpha:1.0 , backgroundColor: '#333'}" id="colorInput"">
-                            
-                        </td>
-                    </tr>
+                            <button  data-jscolor="{'backgroundColor': '#333', onChange: 'bulbColour(this)'}" id="colorInput"">
+
+                        </td> 
+                    </tr> -->
                 </tbody>
             </table>
-            
-            
-        </div>
-    
-    
 </body>
 </html>
