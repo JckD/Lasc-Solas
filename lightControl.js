@@ -9,18 +9,20 @@ async function getDevices()  {
     const tplink = await login(process.env.TPLINK_USER, process.env.TPLINK_PW) 
     let deviceList  = await tplink.getDeviceList();
 
-    console.log(deviceList);
-
     let bigLight = await tplink.getLB130("BigLight")
 
-    //console.log(await bigLight.isOn());
-    let deviceTable = document.getElementById('deviceTableBody')
-    //console.log(deviceTable)
-    console.log(deviceList[0])
+    //get table 
+    let deviceTable = document.getElementById('deviceTable');
+    // create a body for the table and append it
+    let deviceTableBody = document.createElement('tbody');
+    deviceTableBody.id = 'deviceTableBody';
+    deviceTable.appendChild(deviceTableBody)
+
+    // Create cells for every device in the list
     for(i in deviceList) {
 
-        let rowCount = deviceTable.rows.length;
-        let row = deviceTable.insertRow(rowCount);
+        let rowCount = deviceTableBody.rows.length;
+        let row = deviceTableBody.insertRow(rowCount);
         
         // Add device name cell  from devices list alias
         let deviceNameCell = row.insertCell(0);
@@ -41,7 +43,7 @@ async function getDevices()  {
             checkbox.checked = '';
         }
         
-        checkbox.onchange = function(){bulbToggle(bigLight)};
+        checkbox.onchange = function(){bulbToggle(bigLight, i)};
         let label = document.createElement('label');
         label.htmlFor = checkbox.id
 
@@ -52,7 +54,8 @@ async function getDevices()  {
         let colorCell = row.insertCell(2);
         
         let lightState = await bigLight.getState()
-        //console.log(lightState)
+        
+        console.log(lightState)
 
         let color = rgb(lightState.hue, lightState.saturation, lightState.brightness)
         let deviceName = deviceList[i].alias
@@ -80,33 +83,46 @@ async function getDevices()  {
         let waving = false
         waveButton.innerHTML = 'start'
         let wavfunc;
-        waveButton.onchange = function(){slowColorChange(bigLight, wavfunc, waveButton.checked)}
+        waveButton.onchange = function(){slowColorChange(bigLight, wavfunc, waveButton.checked, i)}
         let waveLabel = document.createElement('label');
         waveLabel.htmlFor = waveButton.id
         waveDiv.appendChild(waveButton)
         waveDiv.appendChild(waveLabel)
         waveButtonCell.appendChild(waveDiv)
+
     }
 }
 
 // Toggle the bulb on/off
-function bulbToggle(bulb) {  
+function bulbToggle(bulb, index) {  
     bulb.toggle()
+    console.log(index + 1)
+    clearInterval(index +1)
+
+    let waveSwitch = document.getElementById('switch-50'+index)
+    console.log(waveSwitch)
+    if (waveSwitch.checked) {
+        waveSwitch.checked = false;
+    }
 }
 
 // Handle bulb changing colour from picker
 async function bulbColour(picker, bulb) {
+
     const tplink = await login(process.env.TPLINK_USER, process.env.TPLINK_PW) 
     let deviceList  = await tplink.getDeviceList();
 
     let bigLight = await tplink.getLB130('BigLight').setState(1, 75, picker.channels.h, picker.channels.s, 0 )
+    //await bulb.setState(1, 75, picker.channels.h, picker.channels.s, 0 )
 }
 
 
 // Wave function that cycles through colours every 3 seconds
 // takes the checked status of the switch
-function slowColorChange(bulb, wavfunc, checked) {
-    
+function slowColorChange(bulb, wavfunc, checked, index) {
+   
+    let OnSwitch = document.getElementById('switch-'+index)
+
     if (checked) {
         wavefunc = setInterval(function(){
             i = i + 10;
@@ -118,11 +134,16 @@ function slowColorChange(bulb, wavfunc, checked) {
             
         }, 3000);
 
+        if (!OnSwitch.checked) {
+            OnSwitch.checked = true;
+        }
+
     } else {
         clearInterval(wavefunc)
+ 
     }
 
-    
+
     let i = 0
     let changeColor =async function(i) {
         console.log(i)
@@ -131,3 +152,11 @@ function slowColorChange(bulb, wavfunc, checked) {
 
 }
 
+// Returns the current state of the device
+async function refreshState(){
+    let deviceTableBody = document.getElementById('deviceTableBody');
+    // remove the old table
+    deviceTableBody.remove();
+    //get table again with current state
+    getDevices();
+}
