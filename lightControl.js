@@ -4,9 +4,25 @@ const jscolor = require('@eastdesire/jscolor');
 const rgb = require('hsv-rgb');
 
 
+function getInfo() {
+    let email  = document.getElementById('email').value;
+    let pw = document.getElementById('password').value;
+    location.href = '#';
+    let user = { email, pw }
+    console.log(user)
+    return user
+}
+
 async function getDevices()  {
     //console.log('test')
-    const tplink = await login(process.env.TPLINK_USER, process.env.TPLINK_PW) 
+    let user = getInfo();
+    const tplink = await login(user.email, user.pw)
+    if (tplink){
+        document.getElementById('deviceTable').classList.remove('invisible');
+        document.getElementById('deviceTable').classList.add('visible');
+        document.getElementById('signInButton').classList.remove('visible');
+        document.getElementById('signInButton').classList.add('invisible');
+    }
     let deviceList  = await tplink.getDeviceList();
 
     let bigLight = await tplink.getLB130("BigLight")
@@ -140,7 +156,6 @@ function slowColorChange(bulb, wavfunc, checked, index) {
 
     } else {
         clearInterval(wavefunc)
- 
     }
 
 
