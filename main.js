@@ -1,11 +1,24 @@
 const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron');
+const Store = require('./store.js');
+
+
+// instantiate Store
+const store = new Store({
+    configName: 'user-preferences',
+    defaults: {
+        windowBounds : {width: 600, height: 400 },
+        user : { email: '', pw: ''}
+    }
+})
 
 
 function createWindow() {
 
+    let {width, height} = store.get('windowBounds')
+
     const win = new BrowserWindow({
-        width: 600,
-        height : 400,
+        width: width,
+        height : height,
         frame : false,
         transparent : true,
         webPreferences: { 
@@ -13,6 +26,15 @@ function createWindow() {
             enableRemoteModule : true
         }
     });
+
+    win.on('resize', () => {
+        // The event doesn't pass us the window size, so we call the `getBounds` method which returns an object with
+        // the height, width, and x and y coordinates.
+        let { width, height } = win.getBounds();
+        // Now that we have them, save them using the `set` method.
+        store.set('windowBounds', { width, height });
+    });
+
 
     win.loadFile('index.html');
     win.webContents.on('did-finish-load', function() {

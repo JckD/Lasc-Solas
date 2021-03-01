@@ -2,26 +2,69 @@ require('dotenv').config()
 const { login } = require("tplink-cloud-api");
 const jscolor = require('@eastdesire/jscolor');
 const rgb = require('hsv-rgb');
+const Store = require('./store.js');
+
+// instantiate Store
+const store = new Store({
+    configName: 'user-preferences',
+    defaults: {
+        windowBounds : {width: 600, height: 400 },
+        user : { email: '', pw: ''}
+    }
+})
 
 
+
+// get the info from the sign in form and return it to the getDevices() function
 function getInfo() {
     let email  = document.getElementById('email').value;
     let pw = document.getElementById('password').value;
+    let remember = document.getElementById('rememberME').checked;
+    
+    //close modal
     location.href = '#';
+
+    if (remember) {
+        store.set('user', {email: email, pw: pw});
+    }
+
     let user = { email, pw }
-    console.log(user)
+
     return user
+}
+
+// Have the sign in modal open by default
+// TODO check if the use has been remember'd first and have modal
+// show accodingly
+function openModal(){
+    console.log(store.get('user'))
+    if (store.get('user') != undefined) {
+        
+
+        location.href = '#'
+        getDevices()
+    } else {
+       location.href = '#modal-2';
+    }
+    
 }
 
 async function getDevices()  {
     //console.log('test')
-    let user = getInfo();
+    let user;
+    
+    if (store.get('user') == undefined) {
+       user = getInfo(); 
+    } else {
+        user = store.get('user')
+    }
+    console.log(user)
     const tplink = await login(user.email, user.pw)
     if (tplink){
         document.getElementById('deviceTable').classList.remove('invisible');
         document.getElementById('deviceTable').classList.add('visible');
-        document.getElementById('signInButton').classList.remove('visible');
-        document.getElementById('signInButton').classList.add('invisible');
+        // document.getElementById('signInButton').classList.remove('visible');
+        // document.getElementById('signInButton').classList.add('invisible');
     }
     let deviceList  = await tplink.getDeviceList();
 
@@ -107,6 +150,9 @@ async function getDevices()  {
         waveButtonCell.appendChild(waveDiv)
 
     }
+
+    // if there's no devices
+   // if (deviceList.length )
 }
 
 // Toggle the bulb on/off

@@ -16,7 +16,7 @@
 </head>
 
 
-<body class="dark-mode" >
+<body class="dark-mode" onload="openModal()">
 
     <!-- First comes the modal -->
     <div class="modal" id="modal-2" tabindex="-1" role="dialog">
@@ -35,6 +35,13 @@
                 <label for="password" class="required">Password</label>
                 <input type="password" id="password" class="form-control" placeholder="Password" required="required">
             </div>
+            <div class="form-group">
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="rememberME" value="">
+                    <label for="rememberME">Remember me</label>
+                </div>
+            </div>
+            
             <input class="btn btn-primary btn-block" href="#" onclick="getDevices()" value="Sign in">
             </form>
 
@@ -51,22 +58,23 @@
             </div>
        </div>
     </div>   
-            <table id="deviceTable" class="table table-striped invisible"  >
-                <thead>
-                    <tr>
-                        <th onclick="refreshState()">
-                            Device
-                            <i class="fas fa-redo-alt" float="right"></i>
-                        </th>
-                        <th>On/Off</th>
-                        <th>Colour</th>
-                        <th>Wave</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="d-flex justify-content-center">
-                <a href="#modal-2" class="btn btn-primary visible" role="button" id="signInButton">Sign in</a>
-            </div>
+        <table id="deviceTable" class="table table-striped invisible"  >
+            <thead>
+                <tr>
+                    <th onclick="refreshState()">
+                        Device
+                        <i class="fas fa-redo-alt" float="right"></i>
+                    </th>
+                    <th>On/Off</th>
+                    <th>Colour</th>
+                    <th>Wave</th>
+                </tr>
+            </thead>
+        </table>
+        <br>
+        <div class="d-flex justify-content-center">
+            <a href="#modal-2" class="btn btn-primary visible" role="button" id="signInButton">Sign in</a>
+        </div>
 
 </body>
 </html>
