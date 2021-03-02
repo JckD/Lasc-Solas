@@ -37,7 +37,7 @@ function getInfo() {
 // TODO check if the use has been remember'd first and have modal
 // show accodingly
 function openModal(){
-    console.log(store.get('user'))
+  
     if (store.get('user') != undefined) {
         
 
@@ -52,13 +52,12 @@ function openModal(){
 async function getDevices()  {
     //console.log('test')
     let user;
-    
-    if (store.get('user') == undefined) {
+    //console.log(store.get('user').email)
+    if (store.get('user') == undefined || store.get('user').email == '') {
        user = getInfo(); 
     } else {
         user = store.get('user')
     }
-    console.log(user)
     const tplink = await login(user.email, user.pw)
     if (tplink){
         document.getElementById('deviceTable').classList.remove('invisible');
@@ -114,7 +113,7 @@ async function getDevices()  {
         
         let lightState = await bigLight.getState()
         
-        console.log(lightState)
+       
 
         let color = rgb(lightState.hue, lightState.saturation, lightState.brightness)
         let deviceName = deviceList[i].alias
@@ -158,11 +157,10 @@ async function getDevices()  {
 // Toggle the bulb on/off
 function bulbToggle(bulb, index) {  
     bulb.toggle()
-    console.log(index + 1)
     clearInterval(index +1)
 
     let waveSwitch = document.getElementById('switch-50'+index)
-    console.log(waveSwitch)
+   
     if (waveSwitch.checked) {
         waveSwitch.checked = false;
     }
@@ -170,8 +168,8 @@ function bulbToggle(bulb, index) {
 
 // Handle bulb changing colour from picker
 async function bulbColour(picker, bulb) {
-
-    const tplink = await login(process.env.TPLINK_USER, process.env.TPLINK_PW) 
+    let user = store.get('user');
+    const tplink = await login(user.email, user.pw) 
     let deviceList  = await tplink.getDeviceList();
 
     let bigLight = await tplink.getLB130('BigLight').setState(1, 75, picker.channels.h, picker.channels.s, 0 )
@@ -207,7 +205,7 @@ function slowColorChange(bulb, wavfunc, checked, index) {
 
     let i = 0
     let changeColor =async function(i) {
-        console.log(i)
+       
         await bulb.setState(1, 75, i, 80, 0 )
     }
 
@@ -216,6 +214,13 @@ function slowColorChange(bulb, wavfunc, checked, index) {
 // Returns the current state of the device
 async function refreshState(){
     let deviceTableBody = document.getElementById('deviceTableBody');
+
+    let rowCount = deviceTableBody.rows.length;
+
+    // clear all current intervals
+    for(let i = 0; i < rowCount; i ++) {
+        clearInterval(i + 1);
+    }
     // remove the old table
     deviceTableBody.remove();
     //get table again with current state
